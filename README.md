@@ -22,4 +22,4 @@ If you don't wish to, say "n" and use the output from the script to fix manually
 
 ## License
 
-MIT © [Glen Pike](http://glenpike.com)
+MIT © [Glen Pike](http://glenpike.co.uk)
