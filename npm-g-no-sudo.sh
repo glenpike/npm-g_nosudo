@@ -52,9 +52,9 @@ read -p "Do you wish to update your .bashrc file with the paths and manpaths? [y
 case $yn in
     [Yy]* ) printf "${bashfix}" ${npmdir} >> ~/.bashrc 
 	    printf "\nDon't forget to run 'source ~/.bashrc'\n";;
-    [Nn]* ) printf '\nYou may need to add the following to your ~/.bashrc / .zshrc file\n\' 
-	    printf "${bashfix}\n\n" ${npmdir} ;;
-    * ) echo "Please answer yes or no.";;
+    [Nn]* ) printf "\nYou may need to add the following to your ~/.bashrc / .zshrc file\n\n" 
+	    	printf "${bashfix}\n\n" ${npmdir} ;;
+    * ) echo "Please answer 'y' or 'n'.";;
 esac
 
 rm $file
