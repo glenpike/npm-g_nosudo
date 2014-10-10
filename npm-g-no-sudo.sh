@@ -21,7 +21,7 @@ printf "\nRemoving existing packages temporarily - you might need your sudo pass
 #replace the version numbers
 #remove the newlines
 #and pass to npm uninstall
-cat $file | sed -e 's/@.*//' | xargs -L 4 sudo npm -g uninstall
+cat $file | sed -e 's/@.*//' | xargs sudo npm -g uninstall
 
 npmdir="${HOME}/npm"
 
@@ -36,7 +36,7 @@ sudo chown -R $me:$me ~/.npm
 printf "\nReinstall packages\n"
 #list the packages to install
 #and pass to npm
-cat $file | xargs -L 4 npm -g install
+cat $file | xargs npm -g install
 
 bashfix='
 NPM_PACKAGES="%s"
