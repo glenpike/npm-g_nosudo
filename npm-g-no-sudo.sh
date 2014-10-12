@@ -22,7 +22,7 @@ EOF
 
 DEBUG=0
 VERBOSE=0
-while getopts "hdvnt" OPTION
+while getopts "dv" OPTION
 do
      case $OPTION in
          d)
