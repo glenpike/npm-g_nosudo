@@ -1,44 +1,99 @@
-#!/bin/bash
-#This script is intended to fix the common problem where npm users
-#are required to use sudo to install global packages.
-#It will backup a list of your installed packages
-#remove all but npm, then create a local directory and
-#configure node to use this for global installs
-#whilst also fixing permissions on the .npm dir
+#!/bin/sh
 
-file='/tmp/npm-reinstall.txt'
+usage()
+{
+cat << EOF
+usage: $0 [-d] [-v]
 
-printf "\nSaving list of existing global npm packages\n"
+This script is intended to fix the common problem where npm users
+are required to use sudo to install global packages.
+
+It will backup a list of your installed packages remove all but npm, 
+then create a local directory, configure node to use this for global installs
+whilst also fixing permissions on the .npm dir before, reinstalling the old packages.
+
+OPTIONS:
+   -h	Show this message
+   -d	debug
+   -v	Verbose
+EOF
+}
+
+
+DEBUG=0
+VERBOSE=0
+while getopts "hdvnt" OPTION
+do
+     case $OPTION in
+         d)
+             DEBUG=1
+             ;;
+         v)
+             VERBOSE=1
+             ;;
+         ?)
+             usage
+             exit
+             ;;
+     esac
+done
+
+to_reinstall='/tmp/npm-reinstall.txt'
+
+if [ 1 = ${VERBOSE} ];	then
+	printf "\nSaving list of existing global npm packages\n"
+fi
 
 #Get a list of global packages (not deps)
 #except for the npm package
 #save in a temporary file.
-npm -g list -depth=0 | awk '!/npm/ {print $2}' >$file
+npm -g list -depth=0 | awk '!/npm/ {print $2}' >$to_reinstall
 
 
-printf "\nRemoving existing packages temporarily - you might need your sudo password\n\n"
+if [ 1 = ${VERBOSE} ];	then
+	printf "\nRemoving existing packages temporarily - you might need your sudo password\n\n"
+fi
 #List the file
 #replace the version numbers
 #remove the newlines
 #and pass to npm uninstall
-cat $file | sed -e 's/@.*//' | xargs sudo npm -g uninstall
 
-npmdir="${HOME}/npm"
+uninstall='sudo npm -g uninstall'
+if [ 1 = ${DEBUG} ];	then
+	printf "Won't uninstall"
+	uninstall='echo'
+fi
+cat $to_reinstall | sed -e 's/@.*//' | xargs $uninstall
 
-printf "\nMake a new directory ${npmdir} for our "-g" packages\n"
+npmdir="${HOME}/npm-packages"
+
+if [ 1 = ${VERBOSE} ];	then
+	printf "\nMake a new directory ${npmdir} for our "-g" packages\n"
+fi
+
 mkdir -p ${npmdir}
 npm config set prefix $npmdir
 
-printf "\nFix permissions on the .npm directories\n"
+if [ 1 = ${VERBOSE} ];	then
+	printf "\nFix permissions on the .npm directories\n"
+fi
+
 me=`whoami`
 sudo chown -R $me:$me ~/.npm
 
-printf "\nReinstall packages\n"
+if [ 1 = ${VERBOSE} ];	then
+	printf "\nReinstall packages\n"
+fi
+
 #list the packages to install
 #and pass to npm
-cat $file | xargs npm -g install
+install='npm -g install'
+if [ 1 = ${DEBUG} ];	then
+	install='echo'
+fi
+cat $to_reinstall | xargs $install
 
-bashfix='
+envfix='
 NPM_PACKAGES="%s"
 NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 PATH="$NPM_PACKAGES/bin:$PATH"
@@ -47,17 +102,33 @@ PATH="$NPM_PACKAGES/bin:$PATH"
 unset MANPATH  # delete if you already modified MANPATH elsewhere in your config
 MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 '
+
+fix_env() {
+	if [ -f "${HOME}/.bashrc" ];	then
+		printf "${envfix}" ${npmdir} >> ~/.bashrc
+		printf "\nDon't forget to run 'source ~/.bashrc'\n"
+	fi
+	if [ -f "${HOME}/.zshrc" ];	then
+		printf "${envfix}" ${npmdir} >> ~/.zshrc
+		printf "\nDon't forget to run 'source ~/.zshrc'\n"
+	fi
+
+}
+
+echo_env() {
+	printf "\nYou may need to add the following to your ~/.bashrc / .zshrc file(s)\n\n" 
+	printf "${envfix}\n\n" ${npmdir} 
+}
+
 printf "\n\n"
-read -p "Do you wish to update your .bashrc file with the paths and manpaths? [yn] " yn
+read -p "Do you wish to update your .bashrc/.zshrc file(s) with the paths and manpaths? [yn] " yn
 case $yn in
-    [Yy]* ) printf "${bashfix}" ${npmdir} >> ~/.bashrc 
-	    printf "\nDon't forget to run 'source ~/.bashrc'\n";;
-    [Nn]* ) printf "\nYou may need to add the following to your ~/.bashrc / .zshrc file\n\n" 
-	    	printf "${bashfix}\n\n" ${npmdir} ;;
+    [Yy]* ) fix_env;;
+    [Nn]* ) echo_env;;
     * ) echo "Please answer 'y' or 'n'.";;
 esac
 
-rm $file
+rm $to_reinstall
 
-printf "\nDone - packages are:\n\n"
+printf "\nDone - current package list:\n\n"
 npm -g list -depth=0
