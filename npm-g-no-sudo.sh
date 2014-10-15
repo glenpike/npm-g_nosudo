@@ -65,7 +65,7 @@ if [ 1 = ${DEBUG} ];	then
 fi
 cat $to_reinstall | sed -e 's/@.*//' | xargs $uninstall
 
-npmdir="${HOME}/npm-packages"
+npmdir="${HOME}/.npm-packages"
 
 if [ 1 = ${VERBOSE} ];	then
 	printf "\nMake a new directory ${npmdir} for our "-g" packages\n"
