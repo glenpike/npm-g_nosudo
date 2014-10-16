@@ -47,8 +47,7 @@ fi
 #Get a list of global packages (not deps)
 #except for the npm package
 #save in a temporary file.
-npm -g list -depth=0 | awk '!/npm/ {print $2}' >$to_reinstall
-
+npm -g list --depth=0 --parseable --long | cut -d: -f2 | grep -v '^npm@\|^$' >$to_reinstall
 
 if [ 1 = ${VERBOSE} ];	then
 	printf "\nRemoving existing packages temporarily - you might need your sudo password\n\n"
