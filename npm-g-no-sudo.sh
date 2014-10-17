@@ -78,7 +78,7 @@ if [ 1 = ${VERBOSE} ];	then
 fi
 
 me=`whoami`
-sudo chown -R $me:$me ~/.npm
+sudo chown -R $me ~/.npm
 
 if [ 1 = ${VERBOSE} ];	then
 	printf "\nReinstall packages\n"
