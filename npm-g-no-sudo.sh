@@ -64,7 +64,20 @@ if [ 1 = ${DEBUG} ];	then
 fi
 cat $to_reinstall | sed -e 's/@.*//' | xargs $uninstall
 
-npmdir="${HOME}/.npm-packages"
+defaultnpmdir="${HOME}/.npm-packages"
+npmdir=''
+
+read -p "Choose your install directory. Default (${defaultnpmdir}) : " npmdir
+
+if [ -z ${npmdir} ]; then
+    npmdir=${defaultnpmdir}
+else
+    if [ ! -d ${npmdir} ]; then
+        echo "${npmdir} is not a directory."
+        exit
+    fi
+    npmdir="${npmdir}/.npm-packages"
+fi
 
 if [ 1 = ${VERBOSE} ];	then
 	printf "\nMake a new directory ${npmdir} for our "-g" packages\n"
