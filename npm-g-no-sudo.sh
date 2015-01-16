@@ -62,7 +62,9 @@ if [ 1 = ${DEBUG} ];	then
 	printf "Won't uninstall"
 	uninstall='echo'
 fi
-cat $to_reinstall | sed -e 's/@.*//' | xargs $uninstall
+if [ -s $to_reinstall ]; then
+	cat $to_reinstall | sed -e 's/@.*//' | xargs $uninstall
+fi
 
 defaultnpmdir="${HOME}/.npm-packages"
 npmdir=''
@@ -103,7 +105,9 @@ install='npm -g install'
 if [ 1 = ${DEBUG} ];	then
 	install='echo'
 fi
-cat $to_reinstall | xargs $install
+if [ -s $to_reinstall ]; then
+	cat $to_reinstall | xargs $install
+fi
 
 envfix='
 NPM_PACKAGES="%s"
