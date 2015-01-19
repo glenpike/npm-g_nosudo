@@ -59,7 +59,7 @@ fi
 
 uninstall='sudo npm -g uninstall'
 if [ 1 = ${DEBUG} ];	then
-	printf "Won't uninstall"
+	printf "Won't uninstall\n\n"
 	uninstall='echo'
 fi
 if [ -s $to_reinstall ]; then
@@ -85,8 +85,10 @@ if [ 1 = ${VERBOSE} ];	then
 	printf "\nMake a new directory ${npmdir} for our "-g" packages\n"
 fi
 
-mkdir -p ${npmdir}
-npm config set prefix $npmdir
+if [ 0 = ${DEBUG} ];	then
+	mkdir -p ${npmdir}
+	npm config set prefix $npmdir
+fi
 
 if [ 1 = ${VERBOSE} ];	then
 	printf "\nFix permissions on the .npm directories\n"
@@ -96,7 +98,7 @@ me=`whoami`
 sudo chown -R $me ~/.npm
 
 if [ 1 = ${VERBOSE} ];	then
-	printf "\nReinstall packages\n"
+	printf "\nReinstall packages\n\n"
 fi
 
 #list the packages to install
