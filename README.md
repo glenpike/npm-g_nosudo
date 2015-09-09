@@ -12,8 +12,13 @@ Tested on Ubuntu 14.04 with Bash
 ##Usage:
 
 Download the script, run it:
-
-./npm-g-nosudo.sh 
+```
+./npm-g-nosudo.sh
+```
+or 
+```
+wget -O- https://raw.githubusercontent.com/glenpike/npm-g_nosudo/master/npm-g-nosudo.sh | sh
+```
 
 It will give you the option to fix your .bashrc .zshrc file(s) automatically to use the settings from [Sindre Sorhus' Guide](https://github.com/sindresorhus/guides/blob/master/npm-global-without-sudo.md)
 
