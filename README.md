@@ -28,10 +28,11 @@ If you say "y", you will need to source your corresponding file for your current
 
 ##Important
 
-After running locally, or with wget, and updating your environment files, you will need to [source](http://ss64.com/bash/source.html) the corresponding file before your npm binaries will be found, e.g. for bash:
+After running locally, or with wget, and updating your environment files, you will need to [source](http://ss64.com/bash/source.html) the corresponding file before your npm binaries will be found in the current terminal session, e.g. for bash:
 ```
 source ~/.bashrc
 ```
+or just open an new terminal session.
 
 ## License
 
