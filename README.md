@@ -26,6 +26,13 @@ If you say "n", it will print the variables you need to enable you to fix manual
 
 If you say "y", you will need to source your corresponding file for your current environment vars to be updated.
 
+##Important
+
+After running locally, or with wget, and updating your environment files, you will need to [source](http://ss64.com/bash/source.html) the corresponding file before your npm binaries will be found, e.g. for bash:
+```
+source ~/.bashrc
+```
+
 ## License
 
 MIT © [Glen Pike](http://glenpike.co.uk)
