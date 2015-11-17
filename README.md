@@ -26,7 +26,7 @@ If you say "n", it will print the variables you need to enable you to fix manual
 
 If you say "y", you will need to source your corresponding file for your current environment vars to be updated.
 
-If you run the command vi wget, this changes the stdin for the script, so it won't run interactively and won't update your files - you will need to copy the output from the script where it tells you and add this to your environment manually.
+If you run the command via wget, this changes the stdin for the script, so it doesn't run interactively and won't update your file.  It will echo out the variables you need to set near the end of the script output so you can copy these and add this to your environment manually.
 
 ##Important
 
