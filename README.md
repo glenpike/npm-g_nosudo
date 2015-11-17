@@ -20,15 +20,17 @@ or
 wget -O- https://raw.githubusercontent.com/glenpike/npm-g_nosudo/master/npm-g-nosudo.sh | sh
 ```
 
-It will give you the option to fix your .bashrc .zshrc file(s) automatically to use the settings from [Sindre Sorhus' Guide](https://github.com/sindresorhus/guides/blob/master/npm-global-without-sudo.md)
+If you run the former command (rather than the wget version), the script will give you the option to fix your .bashrc or .zshrc file(s) automatically to use the settings from [Sindre Sorhus' Guide](https://github.com/sindresorhus/guides/blob/master/npm-global-without-sudo.md)
 
 If you say "n", it will print the variables you need to enable you to fix manually.
 
 If you say "y", you will need to source your corresponding file for your current environment vars to be updated.
 
+If you run the command vi wget, this changes the stdin for the script, so it won't run interactively and won't update your files - you will need to copy the output from the script where it tells you and add this to your environment manually.
+
 ##Important
 
-After running locally, or with wget, and updating your environment files, you will need to [source](http://ss64.com/bash/source.html) the corresponding file before your npm binaries will be found in the current terminal session, e.g. for bash:
+After updating your environment files, you will need to [source](http://ss64.com/bash/source.html) the corresponding file before your npm binaries will be found in the current terminal session, e.g. for bash:
 ```
 source ~/.bashrc
 ```
