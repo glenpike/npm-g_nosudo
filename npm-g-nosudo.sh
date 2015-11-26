@@ -143,7 +143,7 @@ read -p "Do you wish to update your .bashrc/.zshrc file(s) with the paths and ma
 case $yn in
     [Yy]* ) fix_env;;
     [Nn]* ) echo_env;;
-    * ) echo "Please answer 'y' or 'n'.";;
+    * ) printf "\nInvalid choice\n"; echo_env;;
 esac
 
 rm $to_reinstall
