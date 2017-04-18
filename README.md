@@ -9,7 +9,7 @@ and this [Stackoverflow answer](http://stackoverflow.com/a/13021677)
 
 Tested on Ubuntu 14.04 with Bash
 
-##Usage:
+## Usage:
 
 Download the script, run it:
 ```
@@ -28,7 +28,7 @@ If you say "y", you will need to source your corresponding file for your current
 
 If you run the command via wget, this changes the stdin for the script, so it doesn't run interactively and won't update your file.  It will echo out the variables you need to set near the end of the script output so you can copy these and add this to your environment manually.
 
-##Important
+## Important
 
 After updating your environment files, you will need to [source](http://ss64.com/bash/source.html) the corresponding file before your npm binaries will be found in the current terminal session, e.g. for bash:
 ```
