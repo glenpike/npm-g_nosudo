@@ -141,9 +141,9 @@ echo_env() {
 printf "\n\n"
 read -p "Do you wish to update your .bashrc/.zshrc file(s) with the paths and manpaths? [yn] " yn
 case $yn in
-    [Yy]* ) fix_env;;
-    [Nn]* ) echo_env;;
-    * ) printf "\nInvalid choice\n"; echo_env;;
+    [Yy]*) fix_env;;
+    [Nn]*) echo_env;;
+    *) printf "\nInvalid choice\n"; echo_env;;
 esac
 
 rm $to_reinstall
