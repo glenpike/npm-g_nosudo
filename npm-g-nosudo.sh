@@ -40,7 +40,7 @@ done
 
 to_reinstall='/tmp/npm-reinstall.txt'
 
-if [ 1 = ${VERBOSE} ];  then
+if [ 1 = ${VERBOSE} ]; then
     printf "\nSaving list of existing global npm packages\n"
 fi
 
@@ -49,7 +49,7 @@ fi
 #save in a temporary file.
 npm -g list --depth=0 --parseable --long | cut -d: -f2 | grep -v '^npm@\|^$' >$to_reinstall
 
-if [ 1 = ${VERBOSE} ];  then
+if [ 1 = ${VERBOSE} ]; then
     printf "\nRemoving existing packages temporarily - you might need your sudo password\n\n"
 fi
 #List the file
@@ -58,7 +58,7 @@ fi
 #and pass to npm uninstall
 
 uninstall='sudo npm -g uninstall'
-if [ 1 = ${DEBUG} ];    then
+if [ 1 = ${DEBUG} ]; then
     printf "Won't uninstall\n\n"
     uninstall='echo'
 fi
@@ -71,40 +71,43 @@ npmdir=''
 
 read -p "Choose your install directory. Default (${defaultnpmdir}) : " npmdir
 
-if [ -z ${npmdir} ]; then
+if [ -z $npmdir ]; then
     npmdir=${defaultnpmdir}
-else
-    if [ ! -d ${npmdir} ]; then
-        echo "${npmdir} is not a directory."
-        exit
-    fi
-    npmdir="${npmdir}/.npm-packages"
 fi
 
-if [ 1 = ${VERBOSE} ];  then
-    printf "\nMake a new directory ${npmdir} for our "-g" packages\n"
+if [ ! -d "${npmdir}" -a 0 = ${DEBUG} ]; then
+  echo "\nWill try to create ${npmdir}\n"
+  mkdir -p ${npmdir}
 fi
 
-if [ 0 = ${DEBUG} ];    then
-    mkdir -p ${npmdir}
+if [ ! -d "${npmdir}" -a 0 = ${DEBUG} ]; then
+    echo "'${npmdir}' is not a directory."
+    exit
+fi
+
+if [ 1 = ${VERBOSE} ]; then
+    printf "\nUsing directory ${npmdir} for our "-g" packages\n"
+fi
+
+if [ 0 = ${DEBUG} ]; then
     npm config set prefix $npmdir
 fi
 
-if [ 1 = ${VERBOSE} ];  then
+if [ 1 = ${VERBOSE} ]; then
     printf "\nFix permissions on the .npm directories\n"
 fi
 
 me=`whoami`
 sudo chown -R $me $npmdir
 
-if [ 1 = ${VERBOSE} ];  then
+if [ 1 = ${VERBOSE} ]; then
     printf "\nReinstall packages\n\n"
 fi
 
 #list the packages to install
 #and pass to npm
 install='npm -g install'
-if [ 1 = ${DEBUG} ];    then
+if [ 1 = ${DEBUG} ]; then
     install='echo'
 fi
 if [ -s $to_reinstall ]; then
@@ -122,7 +125,7 @@ export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 '
 
 fix_env() {
-    if [ -f "${HOME}/.bashrc" ];    then
+    if [ -f "${HOME}/.bashrc" ]; then
         printf "${envfix}" ${npmdir} >> ~/.bashrc
         printf "\nDon't forget to run 'source ~/.bashrc'\n"
     fi
@@ -140,11 +143,19 @@ echo_env() {
 
 printf "\n\n"
 read -p "Do you wish to update your .bashrc/.zshrc file(s) with the paths and manpaths? [yn] " yn
-case $yn in
-    [Yy]* ) fix_env;;
-    [Nn]* ) echo_env;;
-    * ) printf "\nInvalid choice\n"; echo_env;;
-esac
+if [ -z $yn  ]; then
+  printf "\nInvalid choice\n"; echo_env
+elif [ $yn = "Y"  ]; then
+  fix_env
+elif [ $yn = "y" ]; then
+  fix_env
+elif [ $yn = "N" ]; then
+  echo_env
+elif [ $yn = "n" ]; then
+  echo_env
+else
+  printf "\nInvalid choice\n"; echo_env
+fi
 
 rm $to_reinstall
 
