@@ -49,6 +49,15 @@ fi
 #save in a temporary file.
 npm -g list --depth=0 --parseable --long | cut -d: -f2 | grep -v '^npm@\|^$' >$to_reinstall
 
+if [ -f $NVM_DIR/nvm.sh ]; then
+    printf "Found a possible nvm install - this script may cause issues, so will exit\n"
+    printf "a list of your current node's npm packages is in $to_reinstall\n\n"
+    printf "If you save this file somewhere else, e.g. ~/npm-reinstall.txt, you can run\n\n"
+    printf "cat ~/npm-reinstall.txt | xargs npm -f install\n\n"
+    printf "when you add new node versions with nvm\n"
+    exit
+fi
+
 if [ 1 = ${VERBOSE} ];  then
     printf "\nRemoving existing packages temporarily - you might need your sudo password\n\n"
 fi

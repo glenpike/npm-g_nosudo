@@ -15,7 +15,7 @@ Download the script, run it:
 ```
 ./npm-g-nosudo.sh
 ```
-or 
+or
 ```
 wget -O- https://raw.githubusercontent.com/glenpike/npm-g_nosudo/master/npm-g-nosudo.sh | sh
 ```
@@ -35,6 +35,8 @@ After updating your environment files, you will need to [source](http://ss64.com
 source ~/.bashrc
 ```
 or just open an new terminal session.
+
+The script may not play nicely with [Node Version Manager](https://github.com/creationix/nvm) so it will not run if if finds the script installed.
 
 ## License
 
