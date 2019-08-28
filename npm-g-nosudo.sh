@@ -66,7 +66,7 @@ fi
 #remove the newlines
 #and pass to npm uninstall
 
-uninstall='sudo npm -g uninstall'
+uninstall='npm -g uninstall'
 if [ 1 = ${DEBUG} ];    then
     printf "Won't uninstall\n\n"
     uninstall='echo'
@@ -104,7 +104,7 @@ if [ 1 = ${VERBOSE} ];  then
 fi
 
 me=`whoami`
-sudo chown -R $me $npmdir
+chown -R $me $npmdir
 
 if [ 1 = ${VERBOSE} ];  then
     printf "\nReinstall packages\n\n"
