@@ -7,7 +7,10 @@ Inspired by a day trying to sort various machines out on our system to run code 
 
 and this [Stackoverflow answer](http://stackoverflow.com/a/13021677)
 
-Tested on Ubuntu 14.04 with Bash
+Tested on:
+
+- Ubuntu 14.04 with Bash
+- Fedora 30 with ZSH
 
 ## Usage:
 
