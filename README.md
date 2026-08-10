@@ -1,6 +1,8 @@
 npm-g_nosudo
 ============
 
+**Archived as this has been replaced by various version managers, some of which are pretty damn good**
+ 
 A shell script which will fix the problem where you want to stop using sudo for npm -g on Ubuntu.
 
 Inspired by a day trying to sort various machines out on our system to run code nicely.
